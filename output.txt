@@ -1,0 +1,9 @@
+Welcome to eSoko, kindly provide your name: Thank you  zaibu We have following products and their prices,
+Lotter tickets @200 each
+Bread @ ksh.95 each
+Milk @ Ksh. 70 per packet
+Soda @ Ksh. 60 per bottle 
+You carrently have Ksh.  400
+Do you want to purchase a ticket ? Y for yes and N for no. You have not made any ticket purchase
+Do you want to purchase some bread? Y = YES and N = NO: Ensure value entered is correct as expected
+Do you want to purchase some Milk? Y = YES and N = NO: 
