@@ -2,8 +2,8 @@
 import random
 from traceback import print_tb
 
-import sys
-sys.stdout = open('output.txt', 'w')
+#import sys
+#sys.stdout = open('output.txt', 'w')
 
 lt_price = 200
 br_price = 95
@@ -46,21 +46,33 @@ try:
             total_spent += 200
             in_money =in_money - lt_price
 
-            lottery_no=random.randrange(10, 101)
-            total_won =(lottery_no/100)*1000
-            in_money = in_money + total_won
-            lost = lt_price - total_won
-            amount_won = total_won - lt_price
-            #in_money = 
+            lottery_chance = random.randint(0, 2)
+            if lottery_chance == 1:
+                lottery_no=random.randrange(10, 101)
+                total_won =(lottery_no/100)*1000
+                in_money = in_money + total_won
+                lost = lt_price - total_won
+                amount_won = total_won - lt_price
+                #in_money = 
 
-            if total_won < lt_price:
-                print("Sorry you lost: ",lost)
-                print("You currently have Ksh. ", in_money)
+                if total_won < lt_price:
+                    print("Sorry you lost: ",lost)
+                    print("You currently have Ksh. ", in_money)
+                else:
+                    print("You won ", total_won, "Congratulations", )
+                    print("You currently have Ksh. ", in_money)
+
+                busket["Total Tickets"]=total_lt_purchased
+
+
+            
             else:
-                print("You won ", total_won, "Congratulations", )
-                print("You currently have Ksh. ", in_money)
+                print("Sorry you did get the winning ticket")
 
-            busket["Total Tickets"]=total_lt_purchased
+
+            
+
+            
         else:
             print("Value entered is not correct")
     else:
@@ -162,22 +174,30 @@ if in_money>=200:
         extra_ticket = input("You have some extra balance, Do you want to purchase an extra ticket? Y = YES and N=NO")
 
         if extra_ticket == "y" or extra_ticket == "Y":
-            lottery_no=random.randrange(20, 101)
-            total_won =(lottery_no/100)*1000
-            in_money = in_money + total_won
-            total_lt_purchased +=1
-            busket["Total Tickets"]=total_lt_purchased
 
-            lost = lt_price - total_won
-            amount_won = total_won - lt_price
-            #in_money = 
+            lottery_chance = random.randint(0, 2)
+            if lottery_chance == 1:
 
-            if total_won < lt_price:
-                print("Sorry you lost: ",lost)
-                print("You currently have Ksh. ", in_money)
+
+                lottery_no=random.randrange(20, 101)
+                total_won =(lottery_no/100)*1000
+                in_money = in_money + total_won
+                total_lt_purchased +=1
+                busket["Total Tickets"]=total_lt_purchased
+
+                lost = lt_price - total_won
+                amount_won = total_won - lt_price
+                #in_money = 
+
+                if total_won < lt_price:
+                    print("Sorry you lost: ",lost)
+                    print("You currently have Ksh. ", in_money)
+                else:
+                    print("You won ", total_won, "Congratulations", )
+                    print("You currently have Ksh. ", in_money)
+
             else:
-                print("You won ", total_won, "Congratulations", )
-                print("You currently have Ksh. ", in_money)
+                print("Sorry you did not get the winning ticket")
             
 
         else:
@@ -201,7 +221,7 @@ for pr_name, pr_tt_price in busket.items():
 print("Total spent: ",total_spent, "and the balance is: ",in_money)
 
 
-sys.stdout.close()
+#sys.stdout.close()
 
 
 
