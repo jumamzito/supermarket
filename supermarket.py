@@ -87,10 +87,10 @@ try:
 
 
         if bread_response == "Y" or bread_response == "y":
-            bread_response=int(input("Enter number of loaves: "))
-            if bread_response >0:
+            total_br_purchased=int(input("Enter number of loaves: "))
+            if total_br_purchased >0:
 
-                total_br_spent = bread_response * br_price
+                total_br_spent = total_br_purchased * br_price
                 if total_br_spent <= in_money:
                     busket["Bread"]=total_br_spent
                     total_spent += total_br_spent
@@ -106,22 +106,60 @@ try:
 except:
     print("Ensure value entered is correct as expected")
 
+if in_money >=mk_price:
 
-try:
+    try:
 
-    milk_response=input("Do you want to purchase some Milk? Y = YES and N = NO: ")
+        milk_response=input("Do you want to purchase some Milk? Y = YES and N = NO: ")
 
-    if milk_response != "":
+        if milk_response != "":
 
 
-        if milk_response == "Y" or milk_response == "y":
-            milk_response=int(input("Enter number of milk packets: "))
-            if milk_response >0:
-                total_mk_spent = milk_response * mk_price
-                if total_mk_spent <=in_money:
-                    busket["Milk"]=total_mk_spent
-                    total_spent += total_mk_spent
-                    in_money -=total_mk_spent
+            if milk_response == "Y" or milk_response == "y":
+                total_mk_purchased=int(input("Enter number of milk packets: "))
+                if total_mk_purchased > 0:
+                    total_mk_spent = total_mk_purchased * mk_price
+                    if total_mk_spent <=in_money:
+                        busket["Milk"]=total_mk_spent
+                        total_spent += total_mk_spent
+                        in_money -=total_mk_spent
+                        print(busket)
+                        print("Your wallet balance is ",in_money)
+
+
+                    else:
+                        print("The total cost is more than your ewallet balance")
+
+                else:
+                    print("The value entered is not correct")
+
+            else:
+                print("Value entered is not correct")
+        else:
+            print("Value entered is not correct")
+
+    except:
+        print("Response entered is not recognized")
+
+else:
+    print("Not enough to purchase milk")
+
+if in_money >= sd_price:
+
+
+    try:
+
+        soda_response=input("Do you want to purchase some Sodas? Y = YES and N = NO: ")
+
+        if soda_response == "Y" or soda_response == "y":
+            total_sd_purchased=int(input("Enter number of sodas: "))
+            if total_sd_purchased >0:
+
+                total_sd_spent = total_sd_purchased * sd_price
+                if total_sd_spent <=in_money:
+                    busket["Soda"]=total_sd_spent
+                    total_spent += total_sd_spent
+                    in_money -=total_sd_spent
                     print(busket)
                     print("Your wallet balance is ",in_money)
 
@@ -130,48 +168,16 @@ try:
                     print("The total cost is more than your ewallet balance")
 
             else:
-                print("The value entered is not correct")
-
+                print("Enter a correct Value")
         else:
-            print("Value entered is not correct")
-    else:
-        print("Value entered is not correct")
-
-except:
-    print("Response entered is not recognized")
-
-
-
-try:
-
-    soda_response=input("Do you want to purchase some Sodas? Y = YES and N = NO: ")
-
-    if soda_response == "Y" or soda_response == "y":
-        soda_response=int(input("Enter number of sodas: "))
-        if soda_response >0:
-
-            total_sd_spent = soda_response * sd_price
-            if total_sd_spent <=in_money:
-                busket["Soda"]=total_sd_spent
-                total_spent += total_sd_spent
-                in_money -=total_sd_spent
-                print(busket)
-                print("Your wallet balance is ",in_money)
-
-
-            else:
-                print("The total cost is more than your ewallet balance")
-
-        else:
-            print("Enter a correct Value")
-
-except:
-    print("The value entered is not recognized.")
+            print("Response entered was not valid.")
+    except:
+        print("The value entered is not recognized.")
 
 if in_money>=200:
     try:
 
-        extra_ticket = input("You have some extra balance, Do you want to purchase an extra ticket? Y = YES and N=NO")
+        extra_ticket = input("You have some extra balance, Do you want to purchase an extra ticket? Y = YES and N=NO: ")
 
         if extra_ticket == "y" or extra_ticket == "Y":
 
@@ -198,27 +204,76 @@ if in_money>=200:
 
             else:
                 print("Sorry you did not get the winning ticket")
+                in_money = in_money - lt_price
             
 
         else:
             print("No ticket was purchased")
     except:
+
         print("No extra ticket was purchased")
 
-print("Thank you ",customer_name,",the following is your purchased goods..")
-print("Lottery purchased",total_lt_purchased)
-print("Bread purchased",bread_response )
-print("Milk cartons purchased",milk_response)
-print("Soda bottles purchased ",soda_response)
+else:
+    print("You do not have enough funds for extra lottery ticket")
 
-#if bread_response >=2 and milk_response >=1:
+
+if total_br_purchased >=2 and total_mk_purchased >=1:
+    bb_promo = random.randint(0,6)
+    if bb_promo == 2:
+        bb_award = random.randint(50,200)
+        in_money = in_money + bb_award
+
+    else:
+        print("Keep buying for another chance to win big with blueband")
+else:
+    print("We have a blueband promotion that works when you purchase 2 loaves bread and a packet of milk")
+
+
+#Guess the number game at the counter
+
+print("""I have a game for you, am thinking a number between 0 and 20
+guess the correct answer and 1 will give you a 50 discount on your total purchase
+Remember you only have 3 chances""")
+
+win_number = 4
+chances=2
+while chances >= 0:
+    guess = int(input("Guess a number between o and 20: "))
+    if guess >=0 and guess <=20:
+
+        if guess == win_number:
+            print("Congratulations, that was a correct guess")
+            total_spent = total_spent - (0.5 * total_spent)
+            print(total_spent)
+            break
+        
+        elif guess < win_number:
+            print(f'The winning number is higher than {guess}, try again, chances remaining: {chances}')
+            chances -=1 
+        
+        elif guess > win_number:
+            print(f'The winning number is lower than {guess}, try again, chances remaining: {chances}')
+            chances -=1 
+    
+    else:
+        print("Sorry the guess number should be between 0 and 20 strictly")
+
+
+
+
 
 
 print("The total list of expenses is as follows: ")
+print("Thank you ",customer_name,",the following is your purchased goods..")
+print("Lottery purchased",total_lt_purchased)
+print("Bread purchased",total_br_purchased )
+print("Milk cartons purchased",total_mk_purchased)
+print("Soda bottles purchased ",total_sd_purchased)
 for pr_name, pr_tt_price in busket.items():
-  print(pr_name, pr_tt_price)
 
-print("Total spent: ",total_spent, "and the balance is: ",in_money)
+    print(pr_name, pr_tt_price)
+
+    print("Total spent: ",total_spent, "and the balance is: ",in_money)
 
 
 #sys.stdout.close()
