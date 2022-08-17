@@ -1,12 +1,50 @@
 from ast import Return
 import random
 
+# global main_pile
+
+# global discard
+
+main_pile=[]
+discard_pile=[]
+computer_tower=[]
+
+def main():
+    setup_bricks()
+
+    results = setup_bricks()
+    main_pile = results[0]
+    discard_pile = results[1]
+
+    shuffle_bricks(main_pile)
+    deal=deal_initial_bricks(main_pile)
+    computer_tower = deal[0]
+    human_tower = deal[1]
+
+    initial_discard = main_pile.pop(0)
+    discard_pile.append(initial_discard)
+
+    computer_play(computer_tower, main_pile, discard_pile)
+    human_play(human_tower, main_pile, discard_pile)
+    
+    
+    
+    
+    check_bricks(main_pile, discard_pile)
+
+
+
+
+
+
+
+
 # Set up the intial set up bricks to initialize the main pile and discard pile
 def setup_bricks():
     main_pile=[*range(1, 61, 1)]
     discard_pile=[]
-
-    return main_pile,discard_pile
+    set=(main_pile,discard_pile)
+    return set
 
 
 # print(setup_bricks())
@@ -59,8 +97,8 @@ def deal_initial_bricks(main_pile):
     return computer,user
 
 
-def add_brick_to_discard(brick, discard):
-    discard.append(brick)
+def add_brick_to_discard(disc_value, discard_pile):
+    discard_pile.append(disc_value)
 
 
 def find_and_replace(new_brick, brick_to_be_replaced, tower, discard):
@@ -76,39 +114,67 @@ def find_and_replace(new_brick, brick_to_be_replaced, tower, discard):
         return False
 
 
-def computer_play(tower, main_pile, discard):
+def computer_play(computer_tower, main_pile, discard_pile):
     
-    if tower[0]>discard[0]:
-        value=discard.pop(0)
-        disc_value=tower.pop(0)
-        tower.append(value)
-        discard.append(disc_value)
+    if computer_tower[0]>discard_pile[0]:
+        value=discard_pile.pop(0)
+        disc_value=computer_tower.pop(0)
+        computer_tower.append(value)
+        add_brick_to_discard(disc_value, discard_pile)
+        # discard_pile.append(disc_value)
 
-    elif tower[-1]<discard[0]:
-        value=discard.pop(0)
-        disc_value=tower.pop(-1)
-        tower.insert(-1,value)
-        discard.append(disc_value)
+    elif computer_tower[-1]<discard_pile[0]:
+        value=discard_pile.pop(0)
+        disc_value=computer_tower.pop(-1)
+        computer_tower.insert(-1,value)
+        add_brick_to_discard(disc_value, discard_pile)
+        # discard_pile.append(disc_value)
     
     else:
         value=main_pile.pop(0)
-        if value<tower[0]:
-            disc_value=tower.pop(0)
-            tower.append(value)
-            discard.append(disc_value)
+        if value<computer_tower[0]:
+            disc_value=computer_tower.pop(0)
+            computer_tower.append(value)
+            add_brick_to_discard(disc_value, discard_pile)
+            # discard_pile.append(disc_value)
 
-        elif value>tower[-1]:
-            disc_value=tower.pop(-1)
-            tower.insert(-1,value)
-            discard.append(disc_value)
+        elif value>computer_tower[-1]:
+            disc_value=computer_tower.pop(-1)
+            computer_tower.insert(-1,value)
+            add_brick_to_discard(disc_value, discard_pile)
+            # discard_pile.append(disc_value)
 
-    return tower
+    check_tower_blaster(computer_tower)
+    
 
-
-
-            
-
-
+    return computer_tower
 
 
-        
+
+def human_play(human_tower, main_pile, discard_pile):
+    print(f'Current tower is: {human_tower}')
+    print(f'Current top value on discard is: {discard_pile[0]}')
+
+    request_area=input('Do you want to pick main pile or discard pile? M=main,D=discard: ')
+    if request_area == 'D':
+        new_brick=discard_pile.pop(0)
+        brick_to_be_replaced=input('Enter a value to be replaced in the tower: ')
+
+        find_and_replace(new_brick, brick_to_be_replaced, human_tower, discard_pile)
+
+    elif request_area == 'M':
+        new_brick=main_pile.pop(0)
+        brick_to_be_replaced=input('Enter a value to be replaced in the tower: ')
+        find_and_replace(new_brick, brick_to_be_replaced, human_tower, discard_pile)
+
+    else:
+        request_area=input('Do you want to pick main pile or discard pile? M=main,D=discard: ')
+
+    
+    check_tower_blaster(human_tower)
+
+    return human_tower
+
+
+if __name__ == '__main__':
+    main()   
