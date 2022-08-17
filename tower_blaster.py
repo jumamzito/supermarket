@@ -1,3 +1,4 @@
+from ast import Return
 import random
 
 # Set up the intial set up bricks to initialize the main pile and discard pile
@@ -43,4 +44,71 @@ def get_top_brick(brick_pile):
     top_brick=brick_pile.pop(0)
     return top_brick
 
+def deal_initial_bricks(main_pile):
+    computer=[]
+    user=[]
+    while len(computer)<10 and len(user)<10:
+        try:
+            value1=main_pile.pop(0)
+            computer.append(value1)
+            value2=main_pile.pop(0)
+            user.append(value2)
+        except IndexError:
+            break
+            
+    return computer,user
 
+
+def add_brick_to_discard(brick, discard):
+    discard.append(brick)
+
+
+def find_and_replace(new_brick, brick_to_be_replaced, tower, discard):
+    if brick_to_be_replaced in tower:
+        index_name=tower.index(brick_to_be_replaced)
+        tower.remove(brick_to_be_replaced)
+        tower.insert(index_name,new_brick)
+        discard.append(brick_to_be_replaced)
+
+        return True
+    else:
+
+        return False
+
+
+def computer_play(tower, main_pile, discard):
+    
+    if tower[0]>discard[0]:
+        value=discard.pop(0)
+        disc_value=tower.pop(0)
+        tower.append(value)
+        discard.append(disc_value)
+
+    elif tower[-1]<discard[0]:
+        value=discard.pop(0)
+        disc_value=tower.pop(-1)
+        tower.insert(-1,value)
+        discard.append(disc_value)
+    
+    else:
+        value=main_pile.pop(0)
+        if value<tower[0]:
+            disc_value=tower.pop(0)
+            tower.append(value)
+            discard.append(disc_value)
+
+        elif value>tower[-1]:
+            disc_value=tower.pop(-1)
+            tower.insert(-1,value)
+            discard.append(disc_value)
+
+    return tower
+
+
+
+            
+
+
+
+
+        
