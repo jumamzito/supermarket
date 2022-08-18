@@ -8,6 +8,7 @@ import random
 main_pile=[]
 discard_pile=[]
 computer_tower=[]
+human_tower = []
 
 def main():
     setup_bricks()
@@ -24,13 +25,33 @@ def main():
     initial_discard = main_pile.pop(0)
     discard_pile.append(initial_discard)
 
-    computer_play(computer_tower, main_pile, discard_pile)
-    human_play(human_tower, main_pile, discard_pile)
+    while True:
+            
+        computer_play(computer_tower, main_pile, discard_pile)
+        comp_response=check_tower_blaster(computer_tower)
+        if comp_response:
+            print('Computer wins the game')
+            break
+        
+        else:
+            print('Game on')
+        check_bricks(main_pile, discard_pile)
+        human_play(human_tower, main_pile, discard_pile)
+        hum_response=check_tower_blaster(human_tower)
+        if hum_response:
+            print('You won the game')
+            break
+        
+        else:
+            print('Game on')
+        check_bricks(main_pile, discard_pile)
+
+
     
     
     
     
-    check_bricks(main_pile, discard_pile)
+    
 
 
 
@@ -144,7 +165,7 @@ def computer_play(computer_tower, main_pile, discard_pile):
             add_brick_to_discard(disc_value, discard_pile)
             # discard_pile.append(disc_value)
 
-    check_tower_blaster(computer_tower)
+    # check_tower_blaster(computer_tower)
     
 
     return computer_tower
@@ -158,13 +179,14 @@ def human_play(human_tower, main_pile, discard_pile):
     request_area=input('Do you want to pick main pile or discard pile? M=main,D=discard: ')
     if request_area == 'D':
         new_brick=discard_pile.pop(0)
-        brick_to_be_replaced=input('Enter a value to be replaced in the tower: ')
+        brick_to_be_replaced=int(input('Enter a value to be replaced in the tower: '))
 
         find_and_replace(new_brick, brick_to_be_replaced, human_tower, discard_pile)
 
     elif request_area == 'M':
+        print(f'Current top value on discard is: {main_pile[0]}')
         new_brick=main_pile.pop(0)
-        brick_to_be_replaced=input('Enter a value to be replaced in the tower: ')
+        brick_to_be_replaced=int(input('Enter a value to be replaced in the tower: '))
         find_and_replace(new_brick, brick_to_be_replaced, human_tower, discard_pile)
 
     else:
@@ -177,4 +199,4 @@ def human_play(human_tower, main_pile, discard_pile):
 
 
 if __name__ == '__main__':
-    main()   
+    main()  
