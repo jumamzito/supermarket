@@ -297,3 +297,4 @@ for pr_name, pr_tt_price in busket.items():
 print("Total spent: ",total_spent, "and the balance is: ",in_money)
 
 #sys.stdout.close()
+
